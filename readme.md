@@ -12,4 +12,11 @@ install & run
 npm install
 npm run start
 ```
-常駐にはpm2を使う。
+
+pm2
+```
+sudo npm install pm2 -g
+sudo pm2 startup
+sudo pm2 start pm2.yml
+sudo pm2 save
+```
