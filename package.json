@@ -1,0 +1,13 @@
+{
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@google-cloud/text-to-speech": "^3.1.1",
+    "@slack/web-api": "^5.13.0",
+    "castv2-client": "^1.2.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "multicast-dns": "^7.2.2"
+  }
+}
