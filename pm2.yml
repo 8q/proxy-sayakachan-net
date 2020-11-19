@@ -1,4 +1,4 @@
 apps:
-  - script : ./index.js
-    name   : 'proxy-sayakachan-net'
-    watch  : true
+  - script: ./index.js
+    name: 'proxy-sayakachan-net'
+    watch: true

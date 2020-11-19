@@ -3,17 +3,13 @@ require('dotenv').config();
 
 
 // 各種読み込み・設定
+const slack = require('./lib/slack');
 const googlehome = require('./lib/googlehome');
 const googleTextToSpeech = require('./lib/googleTextToSpeech');
 const express = require('express');
 const app = express();
 app.use(express.json());
-const asyncWrapper = fn => {
-    return (req, res, next) => {
-        return fn(req, res, next).catch(next);
-    }
-};
-const { WebClient } = require('@slack/web-api');
+const asyncWrapper = (fn) => ((req, res, next) => fn(req, res, next).catch(next));
 
 
 // パラメータ
@@ -37,7 +33,7 @@ app.post('/googlehome/say', asyncWrapper(async (req, res, next) => {
             return;
         }
 
-        await googlehome.playOnDevice(ip, `http://${IP_ADDRESS}:${PORT}/textToSpeech?text=${encodeURI(text)}`).catch(e => { throw Error(e) });
+        googlehome.playOnDevice(ip, `http://${IP_ADDRESS}:${PORT}/textToSpeech?text=${encodeURI(text)}`).catch(e => console.error(e));
         res.status(201).json({msg: 'created'});
 
     } catch(e) {
@@ -58,21 +54,12 @@ app.post('/slack/postMessage', asyncWrapper(async (req, res, next) => {
             return;
         }
 
-        const token = process.env.SLACK_API_TOKEN;
-        const client = new WebClient(token);
-        const params = {
-            channel: channel,
-            text: text,
-            as_user: true
-        };
-
-        const response = await client.chat.postMessage(params);
+        const response = await slack.postMessage(channel, text);
         res.status(200).json(response);
 
     } catch (e) {
         res.status(500).json({msg: 'internal server error'})
     }
-
 }));
 
 
