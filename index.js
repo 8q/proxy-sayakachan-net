@@ -7,8 +7,10 @@ const slack = require('./lib/slack');
 const googlehome = require('./lib/googlehome');
 const googleTextToSpeech = require('./lib/googleTextToSpeech');
 const express = require('express');
+const logger = require('morgan');
 const app = express();
 app.use(express.json());
+app.use(logger("short"));
 const asyncWrapper = (fn) => ((req, res, next) => fn(req, res, next).catch(next));
 
 
@@ -87,4 +89,4 @@ app.get('/textToSpeech', asyncWrapper(async (req, res, next) => {
 
 
 // サーバー立ち上げ
-app.listen(PORT, () => console.log('proxy-sayakachan-net'));
+app.listen(PORT, () => console.log('proxy-sayakachan-net start.'));
